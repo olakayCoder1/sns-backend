@@ -1,0 +1,7 @@
+[
+    { "name": "５千万以上", "property_type": "A" },
+    { "name": "１千万以上", "property_type": "B" },
+    { "name": "５百万以上", "property_type": "C" },
+    { "name": "３百万以上", "property_type": "D" },
+    { "name": "１百万以下", "property_type": "E" }
+]

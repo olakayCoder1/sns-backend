@@ -1,0 +1,10 @@
+[
+    {
+        "role_id": "admin",
+        "name": "管理者"
+    },
+    {
+        "role_id": "member",
+        "name": "一般"
+    }
+]

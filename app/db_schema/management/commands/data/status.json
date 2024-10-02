@@ -1,0 +1,11 @@
+[
+    { "name": "勧誘", "status_type": "1" },
+    { "name": "無料APO", "status_type": "2" },
+    { "name": "無料取組中", "status_type": "3" },
+    { "name": "新規入金後", "status_type": "4" },
+    { "name": "３か月入金後", "status_type": "5" },
+    { "name": "半年入金完了", "status_type": "6" },
+    { "name": "年間入金完了", "status_type": "7" },
+    { "name": "スポット完了", "status_type": "8" },
+    { "name": "ブラック", "status_type": "9" }
+]

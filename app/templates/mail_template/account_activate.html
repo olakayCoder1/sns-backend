@@ -1,0 +1,22 @@
+{% extends 'mail_template/mail_layout.html' %}
+
+{% block style %}
+
+{% endblock style %}
+    
+{% block content %}
+<p >
+    こんにちは、{{name}}さん。
+    <br>
+    システムに登録されました。<br>
+    下記のURLからアカウントを有効にしてください。
+</p>
+
+<div class="btn__wrapper">
+    <a href="{{ url }}" class="btn">
+        ログインする
+    </a>
+</div>  
+
+{% endblock content %}
+    

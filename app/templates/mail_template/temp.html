@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ComplerE</title>
+    
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600,700,800,900" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/earlyaccess/notosansjapanese.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Kosugi" rel="stylesheet">
+    
+    <style>
+
+        .main__wrapper *{
+            margin: 0;
+            padding: 0;
+            text-decoration: none;
+            font-size: 14px;
+            color: #333;
+            font-family: "Montserrat","Kosugi","Noto Sans Japanese", sans-serif !important;
+        }
+
+        .main__wrapper .header{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .main__wrapper .content{
+            max-width: 768px;
+            margin: auto;
+            padding: 20px 20px;
+        }
+
+        .main__wrapper p{
+            line-height: 30px;
+        }
+
+        .main__wrapper dl{
+            display: flex;
+            flex-wrap: wrap;
+            line-height: 25px;
+        }
+        
+
+        .main__wrapper .message-content{
+            padding: 0px 16px;
+            line-height: 25px;
+            color: #5A5A5A;
+            white-space: pre-wrap;
+            word-break: break-all;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 3;
+            overflow: hidden;
+            font-style: italic;
+        }
+
+        .main__wrapper .btn__wrapper{
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 20px;
+        }
+
+        .btn{
+            display: inline-block;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: 700;
+            color: #fff;
+            background-color: #053DAC;
+            transition: all 0.8s ease;
+        }
+
+        .btn:hover{
+            background-color: #053DAC;
+            opacity: 0.8;
+        }
+
+        .main__wrapper .footer__container{
+            max-width: 768px;
+            margin: auto;
+            padding: 0px 20px 20px;
+        }
+
+        .main__wrapper .footer__desc{
+            line-height: 25px;
+            color: #333;
+            font-size: 13px;
+        }
+
+        @media screen and (max-width: 768px) {
+            .main__wrapper .btn__wrapper{
+                justify-content: center;
+            }
+        }
+    </style>
+
+        
+</head>
+
+<body>
+    <div class="main__wrapper">
+        <header class="header">
+            <img src="./assets/logo.png" style="height: 60px; margin: auto;" alt="">
+        </header>
+    
+        <div class="content">
+            <p >
+                Company neme　user name様<br>
+                <br>
+                ●●さんがインシデント報告にコメントを追加しました。
+            </p>
+            
+            <div style="margin: 16px 0px;">    
+                <dl>
+                    <dt>通報番号：</dt>
+                    <dd>IN-000001</dd>
+                </dl>
+                
+                <dl>
+                    <dt>通報タイトル：</dt>
+                    <dd>セキュリティインシデントについて </dd>
+                </dl>
+                
+                <dl>
+                    <dt>通報者：</dt>
+                    <dd>コンプラ太郎（実名）</dd>
+                </dl>
+                
+            </div>
+
+            <p class="message-content" style="margin: 16px 0px;">お疲れ様です。<br>お疲れ様です。<br>お疲れ様です。<br>お疲れ様です。</p>
+
+            
+            <div class="btn__wrapper">
+                <a href="https://jobhappy.co.jp" class="btn">
+                    申請を確認
+                </a>
+            </div>  
+        </div>
+        
+        
+        <footer class="footer">
+            <section class="footer__container">
+                <p class="footer__desc">
+                    ※このメールに心当たりがない方は、管理者へご連絡の上このメールを破棄してください
+                </p>
+            </section>
+        </footer>
+    </div>
+</body>
+</html>

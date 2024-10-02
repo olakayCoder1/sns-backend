@@ -1,0 +1,102 @@
+[
+    {
+        "email": "taro.suzuki@gmail.com",
+        "password": "password",
+        "last_name": "鈴木",
+        "first_name": "太郎",
+        "last_name_furi": "すずき",
+        "first_name_furi": "たろう",
+        "role_id": "admin",
+        "phone": "080-1234-5678"
+    },
+    {
+        "email": "hanako.yamada@gmail.com",
+        "password": "password",
+        "last_name": "山田",
+        "first_name": "花子",
+        "last_name_furi": "やまだ",
+        "first_name_furi": "はなこ",
+        "role_id": "member",
+        "phone": "090-2345-6789"
+    },
+    {
+        "email": "takeshi.tanaka@gmail.com",
+        "password": "password",
+        "last_name": "田中",
+        "first_name": "健",
+        "last_name_furi": "たなか",
+        "first_name_furi": "たけし",
+        "role_id": "member",
+        "phone": "070-3456-7890"
+    },
+    {
+        "email": "mai.ito@gmail.com",
+        "password": "password",
+        "last_name": "伊藤",
+        "first_name": "麻衣",
+        "last_name_furi": "いとう",
+        "first_name_furi": "まい",
+        "role_id": "member",
+        "phone": "080-4567-8901"
+    },
+    {
+        "email": "ayumi.watanabe@gmail.com",
+        "password": "password",
+        "last_name": "渡辺",
+        "first_name": "歩美",
+        "last_name_furi": "わたなべ",
+        "first_name_furi": "あゆみ",
+        "role_id": "member",
+        "phone": "090-5678-9012"
+    },
+    {
+        "email": "hiroshi.kato@gmail.com",
+        "password": "password",
+        "last_name": "加藤",
+        "first_name": "浩",
+        "last_name_furi": "かとう",
+        "first_name_furi": "ひろし",
+        "role_id": "member",
+        "phone": "070-6789-0123"
+    },
+    {
+        "email": "akira.kobayashi@gmail.com",
+        "password": "password",
+        "last_name": "小林",
+        "first_name": "明",
+        "last_name_furi": "こばやし",
+        "first_name_furi": "あきら",
+        "role_id": "member",
+        "phone": "080-7890-1234"
+    },
+    {
+        "email": "miho.nakamura@gmail.com",
+        "password": "password",
+        "last_name": "中村",
+        "first_name": "美穂",
+        "last_name_furi": "なかむら",
+        "first_name_furi": "みほ",
+        "role_id": "member",
+        "phone": "090-8901-2345"
+    },
+    {
+        "email": "atsushi.saito@gmail.com",
+        "password": "password",
+        "last_name": "斎藤",
+        "first_name": "敦",
+        "last_name_furi": "さいとう",
+        "first_name_furi": "あつし",
+        "role_id": "member",
+        "phone": "070-9012-3456"
+    },
+    {
+        "email": "kaori.ota@gmail.com",
+        "password": "password",
+        "last_name": "太田",
+        "first_name": "香織",
+        "last_name_furi": "おおた",
+        "first_name_furi": "かおり",
+        "role_id": "member",
+        "phone": "080-0123-4567"
+    }
+]
