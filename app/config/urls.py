@@ -12,7 +12,7 @@ from api.v0.customer.admin_user.urls import urlpatterns as v0_admin_urls
 from api.v0.shared.urls import urlpatterns as v0_shared_urls
 
 urlpatterns = [
-    re_path(r'^admin/', admin.site.urls),
+    re_path(r'^api/admin/', admin.site.urls),
     re_path(r'^api/', include(auth_urls)),
     re_path(r'^api/v0/', include(v0_member_urls)),
     re_path(r'^api/v0/owner/', include(v0_owner_urls)),

@@ -3,9 +3,6 @@ from datetime import timedelta
 import os
 import environ
 import cloudinary
-import cloudinary.uploader
-import cloudinary.api
-
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -26,24 +23,19 @@ SECRET_KEY = env("SECRET_KEY")
 
 ON_SERVER = env("ON_SERVER", default=True)
 
-
 if ON_SERVER:
     DEBUG = False
     CORS_ORIGIN_REGEX_WHITELIST = env.list(
         "CORS_ORIGIN_REGEX_WHITELIST", default=[]
     )
-    ALLOWED_HOSTS = ["localhost", "api.cms.tokyo-stock-news.com", "stg.api.cms.tokyo-stock-news.com"]
+    ALLOWED_HOSTS = ["localhost", "api.socialfeed.jp", "socialfeed.jp"]
     CORS_ALLOWED_ORIGINS = [
-        "https://api.cms.tokyo-stock-news.com",
-        "https://stg.api.cms.tokyo-stock-news.com",
-        "https://cms.tokyo-stock-news.com",
-        "https://stg.cms.tokyo-stock-news.com",
+        "https://api.socialfeed.jp",
+        "https://socialfeed.jp",
     ]
     CSRF_TRUSTED_ORIGINS = [
-        "https://api.cms.tokyo-stock-news.com",
-        "https://stg.api.cms.tokyo-stock-news.com",
-        "https://cms.tokyo-stock-news.com",
-        "https://stg.cms.tokyo-stock-news.com",
+        "https://api.socialfeed.jp",
+        "https://socialfeed.jp",
     ]
 else:
     DEBUG = True
@@ -60,8 +52,6 @@ DJANGO_APPS = [
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
-
-    'cloudinary_storage', # exceptional third party
     "django.contrib.staticfiles"
 ]
 THIRD_PARTY_APPS = [
@@ -72,9 +62,7 @@ THIRD_PARTY_APPS = [
     'rest_framework_swagger',       # Swagger 
     'drf_yasg',                     # Yet Another Swagger generator
     'django_crontab',
-    'dbbackup',
-    'cloudinary',
-    "django_celery_beat"
+    'dbbackup'
 ]
 OUR_APPS = [
     "jwt_auth",
@@ -130,12 +118,43 @@ WSGI_APPLICATION = "config.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
-DATABASES = {
-    'default': { 
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'analytics_copy.sqlite3',
-    },
-}
+# Database
+if ON_SERVER:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': env("DB_NAME"),
+            'USER':  env("DB_USER"),
+            'PASSWORD':  env("DB_PASSWORD"),
+            'HOST':'localhost',
+            'PORT':'3306',
+        }
+    }
+    DBBACKUP_CONNECTORS = {
+        'default': {
+            'USER': env("DB_USER"),
+            'PASSWORD': env("DB_PASSWORD"),
+            'HOST': 'localhost'
+        }
+    }
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': "auto_posting_tool",
+            'USER':  "root",
+            'PASSWORD':  "",
+            'HOST':'localhost',
+            'PORT':'3306',
+        }
+    }
+    DBBACKUP_CONNECTORS = {
+        'default': {
+            'USER': 'root',
+            'PASSWORD': '',
+            'HOST': 'localhost'
+        }
+    }
     
 DBBACKUP_STORAGE = 'django.core.files.storage.FileSystemStorage'
 DBBACKUP_STORAGE_OPTIONS = {'location': f'{BASE_DIR}/backup/' }
@@ -157,25 +176,20 @@ AUTH_USER_MODEL = "jwt_auth.User"
 
 LANGUAGE_CODE = "en-us"
 
-# TIME_ZONE = "Asia/Tokyo"
+TIME_ZONE = "Asia/Tokyo"
 
 USE_I18N = True
 
 USE_L10N = True
 
-# USE_TZ = False
+USE_TZ = False
 
-TIME_ZONE = 'Africa/Lagos'
-USE_TZ = True
-
-# STORAGE_ROOT = os.path.join(BASE_DIR, 'storage')
+STORAGE_ROOT = os.path.join(BASE_DIR, 'storage')
 
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-# MEDIA_URL = '/media/'
-
-# MEDIA_URL = 'https://res.cloudinary.com/drbjh9df5/'
+MEDIA_URL = '/media/'
 
 cloudinary.config(
     cloud_name='drbjh9df5',  # Replace with your Cloudinary cloud name
@@ -189,9 +203,6 @@ CLOUDINARY_STORAGE = {
     'API_KEY': '975346332749118',
     'API_SECRET': 'pE0hNc2eTxYdn0g6muN5qD2TK00'
 }
-
-
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 # Static files (CSS, JavaScript, Images)
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
@@ -230,7 +241,6 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = env("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")
 EMAIL_USE_TLS = True 
-
 if ON_SERVER:
     EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 else:
@@ -238,11 +248,7 @@ else:
 
 # In your Django project's settings.py, configure Celery to use the chosen message broker. Here's an example configuration for Redis:
 CELERY_BROKER_URL = env("CELERY_BROKER_URL", default="redis://localhost:6379/0")
-CELERY_RESULT_BACKEND = 'redis://localhost:6379/0' 
-CELERY_ACCEPT_CONTENT = ['json'] 
-CELERY_TASK_SERIALIZER = 'json'
-CELERY_RESULT_SERIALIZER = 'json'
-CELERY_TIMEZONE = 'UTC'
+    
 
 # Maximum size in bytes allowed for uploaded files.
 DATA_UPLOAD_MAX_MEMORY_SIZE = 10 * 1024 * 1024  # 10MB
@@ -250,12 +256,3 @@ DATA_UPLOAD_MAX_MEMORY_SIZE = 10 * 1024 * 1024  # 10MB
 FILE_UPLOAD_MAX_MEMORY_SIZE = 50 * 1024 * 1024  # 50MB
 # Maximum size in bytes allowed for an uploaded file.
 FILE_UPLOAD_MAX_SIZE = 100 * 1024 * 1024  # 100MB
-
-
-
-# this will be change to the configure uri on facebook
-FACEBOOK_REDIRECT_URI = 'https://olanrewajukabiru.vercel.app/'
-
-
-TWITTER_API_KEY=env("TWITTER_API_KEY")
-TWITTER_API_SECRET=env("TWITTER_API_SECRET")

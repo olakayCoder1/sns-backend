@@ -306,3 +306,5 @@ dist
 .pnp.*
 
 CACHE/
+
+backend.json
