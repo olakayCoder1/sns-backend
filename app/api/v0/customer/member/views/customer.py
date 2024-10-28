@@ -318,7 +318,7 @@ class ListCustomersSocialConfigAPI(APIView):
         
         serializers = SocialConfigListSerializer(social_configs, many=True)
 
-        return Response({"msg": "顧客情報が正常に登録されました。","data":serializers.data})
+        return Response({"data":serializers.data})
 
 
 class DispatchVideoAPI(APIView):
