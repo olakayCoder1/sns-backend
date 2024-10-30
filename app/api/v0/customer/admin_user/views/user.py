@@ -61,12 +61,12 @@ class CreateUserAPI(APIView):
                     password='',
                     user_info=user_info,
                     permission="customer",
-                    is_active=True,
+                    is_active=False,
                     is_allowed=clean_data['is_allowed']
                 )
 
                 # ※登録後、担当にメールが送信されます。メール内のURLからアカウントの有効化を行ってください。
-                # send_mail(request, clean_data["email"])
+                send_mail(request, clean_data["email"])
                 
                 serializer = UserSerializer(user)
 

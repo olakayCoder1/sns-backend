@@ -22,7 +22,7 @@ def send_mail(request, email):
     m_reset_token = RegisterToken(user_id=m_user.id, token=token, expire_at=(datetime.datetime.now()+ datetime.timedelta(days=90)))
     m_reset_token.save()
 
-    activate_url = f"https://wavemaster.vercel.app/accounts/activate?token={token}"
+    activate_url = f"https://socialfeed.jp/accounts/activate?token={token}"
 
 
     print("Activation Link ===========")
