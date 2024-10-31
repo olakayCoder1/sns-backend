@@ -24,7 +24,7 @@ def send_mail(request, email):
 
     activate_url = f"https://socialfeed.jp/accounts/activate?token={token}"
 
-
+    
     print("Activation Link ===========")
     print(activate_url)
     print("=================")
