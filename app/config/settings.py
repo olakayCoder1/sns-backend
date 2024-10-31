@@ -235,15 +235,14 @@ SIMPLE_JWT = {
 
 
 #Email
-# DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL")
-DEFAULT_FROM_EMAIL = "info@socialfeed.jp"
-# EMAIL_HOST = env("EMAIL_HOST")
-EMAIL_HOST = "hit-mail2.jp"
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+DEFAULT_FROM_EMAIL = 'info@socialfeed.jp'
+EMAIL_HOST = 'hit-mail2.jp'
 EMAIL_PORT = 587                  
-EMAIL_HOST_USER = "info@socialfeed.jp"
-# EMAIL_HOST_USER = env("EMAIL_HOST_USER")
-EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")
-EMAIL_USE_TLS = True 
+EMAIL_HOST_USER =''
+EMAIL_HOST_PASSWORD =''
+EMAIL_USE_TLS = False
+
 if ON_SERVER:
     EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 else:
