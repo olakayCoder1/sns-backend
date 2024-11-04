@@ -28,15 +28,15 @@ class YouTubeManager:
             "token_uri": "https://oauth2.googleapis.com/token",  # Token exchange URI
             "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",  # URL for OAuth provider certificates
             "client_secret": "",  # Placeholder for client secret
-            "redirect_uris": ["http://localhost:3000", "http://localhost:8000", "http://127.0.0.1:8000"],  # Allowed redirect URIs
-            "javascript_origins": ["http://localhost:3000", "http://127.0.0.1:8000"]  # Allowed JavaScript origins
+            "redirect_uris": ["http://localhost:3000", "http://localhost:8000", "http://127.0.0.1:8000", "https://api.socialfeed.jp"],  # Allowed redirect URIs
+            "javascript_origins": ["http://localhost:3000", "http://127.0.0.1:8000", "https://socialfeed.jp"]  # Allowed JavaScript origins
         }
     }
 
     SCOPES = ['https://www.googleapis.com/auth/youtube.upload']  # Scope for uploading videos to YouTube
     API_SERVICE_NAME = 'youtube'  # YouTube API service name
     API_VERSION = 'v3'  # YouTube API version
-    REDIRECT_URI = 'http://localhost:3000/snsaccounts/create'  # URI to redirect after OAuth authentication
+    REDIRECT_URI = 'http://socialfeed.jp/snsaccounts/create'  # URI to redirect after OAuth authentication
 
     @staticmethod
     def authenticate_user(request, config: SocialConfig, extra_params: dict = None):
