@@ -36,7 +36,7 @@ class YouTubeManager:
     SCOPES = ['https://www.googleapis.com/auth/youtube.upload']  # Scope for uploading videos to YouTube
     API_SERVICE_NAME = 'youtube'  # YouTube API service name
     API_VERSION = 'v3'  # YouTube API version
-    REDIRECT_URI = 'http://socialfeed.jp/snsaccounts/create'  # URI to redirect after OAuth authentication
+    REDIRECT_URI = 'https://socialfeed.jp/snsaccounts/create'  # URI to redirect after OAuth authentication
 
     @staticmethod
     def authenticate_user(request, config: SocialConfig, extra_params: dict = None):

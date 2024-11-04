@@ -99,20 +99,25 @@ class CreateCustomersSocialConfigAPI(APIView):
 
     def post(self, request):
         # Deserialize request data
+        print("request : ", request.data)
+
         serializer = CustomersSocialConfigCreateSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         social_type = serializer.validated_data['ads']
         data = request.data
+        print("social_type")
 
         # Validate social_type
         valid_providers = [item for sublist in SocialConfig.AVAILABLE_PROVIDER for item in sublist]
         if social_type not in valid_providers:
             raise ValidationError({'ads': '選択された値は有効な選択肢ではありません。'})
-        
+        print("validator")
         
 
         # Validate required fields based on social_type
         self._validate_required_fields(social_type, data)
+
+        print("sefl_validator")
 
 
         # Check if the user already has this type of credentials
@@ -121,22 +126,33 @@ class CreateCustomersSocialConfigAPI(APIView):
                 {"msg": "指定されたタイプの認証情報は既に登録されています。"},
                 status=400
             )
-
+        print("check existing data")
         # Create SocialConfig instance
-        social_config = self._create_social_config(social_type, serializer.validated_data, request.user)
-
+        # social_config = self._create_social_config(social_type, serializer.validated_data, request.user)
+        # return Response("response", status=200)
         # Authenticate user and return response
+        print("social_type", social_type)
         if social_type == "YOUTUBE":
-            status_code, response = YouTubeManager.authenticate_user(request, social_config)
+            print("===========YOUTUBE>>>>>>>>>>>>>>>>_____________", request.data)
+            # status_code, response = YouTubeManager.authenticate_user(request, social_config)
+            status_code, response = YouTubeManager.authenticate_user_register(request, request.data)
+
         elif social_type == 'INSTAGRAM':
+            print("===========INSTAGRAM>>>>>>>>>>>>>>>>_____________", request.data)
             instagram_manager = InstagramMediaManager()
+            # status_code, response = instagram_manager.facebook_login(data['facebook_app_id'], social_config.id)
             status_code, response = instagram_manager.facebook_login(data['facebook_app_id'], social_config.id)
 
         elif social_type == 'TWITTER':
+            print("===========TWITTER>>>>>>>>>>>>>>>>_____________", request.data)
             twitter_manager = TwitterMediaManager()
-            status_code, response = twitter_manager.twitter_authorize(request,social_config.id)
+            status_code, response = twitter_manager.twitter_authorize(request,request.data['name'])
+            # status_code, response = twitter_manager.twitter_authorize(request,social_config.id)
+
         else:
             return Response({"msg": "無効なソーシャルタイプが提供されました"}, status=400)
+        social_config = self._create_social_config(social_type, serializer.validated_data, request.user)
+        print("state code :", status_code)
 
         return Response(response, status=status_code)
 
@@ -809,5 +825,6 @@ class DownloadCustomerAPI(APIView):
             print(str(e))
             return Response(str(e), status=500)
         
+
 
 
