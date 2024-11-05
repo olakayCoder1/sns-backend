@@ -208,7 +208,7 @@ class CreateCustomersSocialConfigCallbackAPI(APIView):
                         request=request
                     )
                 
-                elif config.provider == "INSTAGRAM":
+                elif config.provider == "YOUTUBE":
 
                     return YouTubeManager.callback_handler(request,config)
 
