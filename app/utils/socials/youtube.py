@@ -37,6 +37,8 @@ class YouTubeManager:
     API_SERVICE_NAME = 'youtube'  # YouTube API service name
     API_VERSION = 'v3'  # YouTube API version
     REDIRECT_URI = 'https://socialfeed.jp/snsaccounts/create'  # URI to redirect after OAuth authentication
+    # REDIRECT_URI = 'http://localhost:3000/snsaccounts/create'  # URI to redirect after OAuth authentication
+
 
     @staticmethod
     def authenticate_user(request, config: SocialConfig, extra_params: dict = None):
