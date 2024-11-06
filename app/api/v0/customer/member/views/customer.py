@@ -360,7 +360,6 @@ class DispatchVideoAPI(APIView):
         twitter_description = request.data.get('twitter_description')
 
         status_code = 200
-
         try:
             processing_id = str(uuid.uuid4())
             user_id = request.user.id
@@ -381,7 +380,6 @@ class DispatchVideoAPI(APIView):
                         description=description
                     ) for video in videos
                 ]
-
                 if request.data.get("instance_dispatch") == "true":
                     schedule_for_background_upload.delay(
                         title,

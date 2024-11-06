@@ -253,8 +253,8 @@ CELERY_BROKER_URL = env("CELERY_BROKER_URL", default="redis://localhost:6379/0")
     
 
 # Maximum size in bytes allowed for uploaded files.
-DATA_UPLOAD_MAX_MEMORY_SIZE = 10 * 1024 * 1024  # 10MB
+DATA_UPLOAD_MAX_MEMORY_SIZE = 1000 * 1024 * 1024  # 10MB
 # Maximum size in bytes allowed for a single file uploaded via a multipart/form-data request.
-FILE_UPLOAD_MAX_MEMORY_SIZE = 50 * 1024 * 1024  # 50MB
+FILE_UPLOAD_MAX_MEMORY_SIZE = 1000 * 1024 * 1024  # 50MB
 # Maximum size in bytes allowed for an uploaded file.
-FILE_UPLOAD_MAX_SIZE = 100 * 1024 * 1024  # 100MB
+FILE_UPLOAD_MAX_SIZE = 1000 * 1024 * 1024  # 100MB
