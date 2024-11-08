@@ -248,3 +248,82 @@ class YouTubeManager:
                 # Notify user of an unexpected error
                 print(f'An error occurred: {e}')
                 return 400, str(e), str(e)
+            
+
+
+
+    @staticmethod
+    def upload_video_with_retry(social_config, video_file, title, description, payload=None):
+        user_tokens = social_config
+        credentials_data = user_tokens.youtube_credentials_data
+        if not credentials_data:
+            return 401, 'User not authenticated', 'User not authenticated'
+
+        credentials = Credentials(**credentials_data)
+        if credentials.expired and credentials.refresh_token:
+            request_refresh = google.auth.transport.requests.Request()
+            credentials.refresh(request_refresh)
+
+        youtube = build(
+            YouTubeManager.API_SERVICE_NAME, 
+            YouTubeManager.API_VERSION, 
+            credentials=credentials,
+        )
+
+        body = {
+            'snippet': {
+                'title': title,
+                'description': description,
+                'categoryId': '22',
+            },
+            'status': {
+                'privacyStatus': 'public'
+            }
+        }
+
+        # Retry mechanism
+        max_retries = 3
+        attempt = 0
+        while attempt < max_retries:
+            try:
+                if hasattr(video_file, 'read'):
+                    video_file_stream = BytesIO(video_file.read())
+                else:
+                    video_file_stream = BytesIO(video_file)
+
+                # Set the chunksize to 1 MB (1024 * 1024 bytes)
+                chunk_size = 1024 * 1024
+                media_body = MediaIoBaseUpload(video_file_stream, resumable=True, chunksize=chunk_size, mimetype='video/mp4')
+
+                request = youtube.videos().insert(
+                    part="snippet,status",
+                    body=body,
+                    media_body=media_body
+                )
+
+                response = None
+                while response is None:
+                    status, response = request.next_chunk()
+                    if status:
+                        print(f"Upload progress: {int(status.progress() * 100)}%")
+                
+                video_id = response['id']
+                video_url = f"https://www.youtube.com/watch?v={video_id}"
+                return 200, video_id, video_url
+            
+            except HttpError as e:
+                if e.resp.status == 500 or e.resp.status == 503:  # Server-side errors
+                    print(f"Server error: {e}. Retrying...")
+                    attempt += 1
+                    time.sleep(5)  # wait before retrying
+                else:
+                    print(f"An error occurred: {e}")
+                    return 400, str(e), str(e)
+            except Exception as e:
+                print(f"An unexpected error occurred: {e}")
+                return 400, str(e), str(e)
+
+        # If max retries reached
+        return 500, "Failed after multiple retries", "Failed after multiple retries"
+                
+

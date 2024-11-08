@@ -94,7 +94,7 @@ def schedule_for_background_upload(title, description, user_id, processing_id, c
 
                 try:
                     if social.provider == "YOUTUBE":
-                        status_code, message, response = provider_manager.upload_video(
+                        status_code, message, response = provider_manager.upload_video_with_retry(
                             social_config=social,
                             video_file=video.file,
                             title=video.youtube_title,
