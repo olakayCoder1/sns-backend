@@ -5,7 +5,7 @@ import urllib.parse
 from django.conf import settings
 from django.shortcuts import redirect
 from jwt_auth.models import UserInfo
-from db_schema.models import SocialConfig
+from db_schema.models import ScheduleVideo, SocialConfig
 from rest_framework.response import Response
 
 
@@ -25,6 +25,7 @@ class InstagramMediaManager:
         self.access_token = access_token
         self.instagram_business_account_id = instagram_business_account_id
         self.base_url = 'https://graph.facebook.com/v20.0'  # Base URL for Facebook Graph API
+        self.max_retries = 3
 
     def facebook_login(self, facebook_app_id, config_id):
         """
@@ -116,12 +117,15 @@ class InstagramMediaManager:
             # get the user and update the user social record
             try:
                 user_profile:UserInfo = request.user.user_info
-                user_profile.is_youtube = True
+                user_profile.is_instagram = True
                 user_profile.save()
-            except:pass
+            except Exception as e:
+                pass
             return Response({'msg': "顧客情報が正常に登録されました。"}, status=200)
         else:
             return Response({'msg': f"Error: {data.get('error', {}).get('message', 'Unknown error')}"}, status=400)
+
+
 
     def create_media_container(self, video_url, caption):
         """
@@ -181,11 +185,46 @@ class InstagramMediaManager:
             print(f"Error Type: {error_type}")
             print(f"Error Code: {error_code}")
 
-            return json_response
+            return {
+            'status_code': 'ERROR',
+            'error_message': error_message,
+            'error_type': error_type,
+            'error_code': error_code
+        }
+
+    # def publish_media_container(self, container_id):
+    #     """
+    #     Publishes the media container once the status is 'FINISHED'.
+
+    #     Args:
+    #         container_id (str): ID of the media container to publish.
+
+    #     Returns:
+    #         dict: JSON response from Instagram API with the result of the publish operation.
+    #     """
+    #     response = self.container_status(container_id)
+    #     print(f"Container status ::: {response}")
+
+    #     if response.get('status_code') == 'FINISHED':
+    #         url = f'{self.base_url}/{self.instagram_business_account_id}/media_publish'
+    #         params = {
+    #             'creation_id': container_id,
+    #             'access_token': self.access_token
+    #         }
+    #         response = requests.post(url, params=params)
+    #         return response.json()
+    #     elif response.get('status_code') == 'IN_PROGRESS':
+    #         time.sleep(20)
+    #         return self.publish_media_container(container_id)
+    #     elif response.get('status_code') == 'ERROR':
+    #         print(response)
+    #         return {"error": "18057806071688227"}  # Return a specific error code
+    #     else:
+    #         return {'error': 'Container not ready for publishing.'}
 
     def publish_media_container(self, container_id):
         """
-        Publishes the media container once the status is 'FINISHED'.
+        Publishes the media container once the status is 'FINISHED' with retry logic.
 
         Args:
             container_id (str): ID of the media container to publish.
@@ -193,24 +232,34 @@ class InstagramMediaManager:
         Returns:
             dict: JSON response from Instagram API with the result of the publish operation.
         """
-        response = self.container_status(container_id)
-        print(f"Container status ::: {response}")
+        retries = 0
+        while retries < self.max_retries:
+            response = self.container_status(container_id)
+            print(f"Container status ::: {response}")
 
-        if response.get('status_code') == 'FINISHED':
-            url = f'{self.base_url}/{self.instagram_business_account_id}/media_publish'
-            params = {
-                'creation_id': container_id,
-                'access_token': self.access_token
-            }
-            response = requests.post(url, params=params)
-            return response.json()
-        elif response.get('status_code') == 'IN_PROGRESS':
-            time.sleep(20)
-            return self.publish_media_container(container_id)
-        elif response.get('status_code') == 'ERROR':
-            return {"error": "18057806071688227"}  # Return a specific error code
-        else:
-            return {'error': 'Container not ready for publishing.'}
+            status_code = response.get('status_code')
+
+            if status_code == 'FINISHED':
+                url = f'{self.base_url}/{self.instagram_business_account_id}/media_publish'
+                params = {
+                    'creation_id': container_id,
+                    'access_token': self.access_token
+                }
+                response = requests.post(url, params=params)
+                return response.json()
+            elif status_code == 'IN_PROGRESS':
+                retries += 1
+                print(f"Status IN_PROGRESS. Retrying... (Attempt {retries}/{self.max_retries})")
+                time.sleep(20)  # Wait before retrying
+            elif status_code == 'ERROR':
+                print(f"Error: Container upload failed with status {status_code}")
+                return {"error": f"Upload failed with status {status_code}."}
+            else:
+                print(f"Unexpected status: {status_code}")
+                return {"error": "Unexpected status encountered."}
+
+        # If retries exceeded max attempts
+        return {"error": "Maximum retry attempts reached. Upload failed."}
 
     def handle_video_upload(self, video_url, caption):
         """

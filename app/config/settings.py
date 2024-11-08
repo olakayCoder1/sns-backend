@@ -258,3 +258,5 @@ DATA_UPLOAD_MAX_MEMORY_SIZE = 1000 * 1024 * 1024  # 10MB
 FILE_UPLOAD_MAX_MEMORY_SIZE = 1000 * 1024 * 1024  # 50MB
 # Maximum size in bytes allowed for an uploaded file.
 FILE_UPLOAD_MAX_SIZE = 1000 * 1024 * 1024  # 100MB
+
+FACEBOOK_REDIRECT_URI = '' # replace this with actual redirect url
