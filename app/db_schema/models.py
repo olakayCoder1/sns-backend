@@ -247,6 +247,8 @@ class ScheduleVideo(models.Model):
     instagram_description = models.TextField(blank=True, null=True)
     twitter_description = models.TextField(blank=True, null=True)
     socials = models.JSONField(default=list)
+    tags = models.TextField(null=True,blank=True) # sport,game
+    restriction = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

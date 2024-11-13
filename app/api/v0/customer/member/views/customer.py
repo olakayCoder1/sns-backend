@@ -348,9 +348,6 @@ class DispatchVideoAPI(APIView):
 
 
         print(choices)
-        print(choices)
-        print(choices)
-        print(choices)
         description = serializer.validated_data['description']
         title = serializer.validated_data['title']
         youtube_title = request.data.get('youtube_title')
@@ -358,6 +355,14 @@ class DispatchVideoAPI(APIView):
         tiktok_description = request.data.get('tiktok_description')
         instagram_description = request.data.get('instagram_description')
         twitter_description = request.data.get('twitter_description')
+
+        input_tags = request.data.get('tags','')
+        restriction = request.data.get('restriction',False) 
+
+        if restriction == 'true':
+            restriction = True
+        else:
+            restriction = False
 
         status_code = 200
         try:
@@ -377,6 +382,8 @@ class DispatchVideoAPI(APIView):
                         twitter_description=twitter_description,
                         youtube_title=youtube_title,
                         socials=choices,
+                        tags=input_tags,
+                        restriction=restriction,
                         description=description
                     ) for video in videos
                 ]

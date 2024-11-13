@@ -98,7 +98,9 @@ def schedule_for_background_upload(title, description, user_id, processing_id, c
                             social_config=social,
                             video_file=video.file,
                             title=video.youtube_title,
-                            description=video.youtube_description
+                            description=video.youtube_description,
+                            tags=video.tags,
+                            restriction=video.restriction,
                         )
                         if status_code == 200:
                             video.socials = remove_social_from_socials_list(video.socials or [],"YOUTUBE")

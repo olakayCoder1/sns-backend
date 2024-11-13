@@ -6,7 +6,7 @@ from googleapiclient.http import MediaIoBaseUpload
 from googleapiclient.errors import HttpError 
 from urllib.parse import urlencode  
 from django.http import HttpResponseRedirect  
-from db_schema.models import SocialConfig 
+from db_schema.models import ScheduleVideo, SocialConfig 
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaFileUpload 
 from google_auth_oauthlib.flow import Flow 
@@ -251,9 +251,8 @@ class YouTubeManager:
             
 
 
-
     @staticmethod
-    def upload_video_with_retry(social_config, video_file, title, description, payload=None):
+    def upload_video_with_retry(social_config, video_file, title, description, tags=None, restriction='false', payload=None):
         user_tokens = social_config
         credentials_data = user_tokens.youtube_credentials_data
         if not credentials_data:
@@ -269,15 +268,21 @@ class YouTubeManager:
             YouTubeManager.API_VERSION, 
             credentials=credentials,
         )
+        video_tags = []
+
+        if tags and isinstance(tags,str) and len(tags.strip()) > 1:
+            video_tags = tags.split(',')
 
         body = {
             'snippet': {
                 'title': title,
                 'description': description,
                 'categoryId': '22',
+                'tags': video_tags,
             },
             'status': {
-                'privacyStatus': 'public'
+                'privacyStatus': 'public',
+                'selfDeclaredMadeForKids': restriction,
             }
         }
 
@@ -327,3 +332,20 @@ class YouTubeManager:
         return 500, "Failed after multiple retries", "Failed after multiple retries"
                 
 
+
+# video = ScheduleVideo.objects.last()
+# social = SocialConfig.objects.last()
+# print(social.facebook_access_token)
+# status_code, message, response = YouTubeManager().upload_video_with_retry(
+#     social_config=social,
+#     video_file=video.file,
+#     title='Test video restriction',
+#     description='Testing restriction and category'
+# )
+
+# print(status_code, message, response)  # Output: 200, video_id, video_url
+
+# print(video.file.url)
+# print(video.file.url)
+# print(video.file.url)
+# response = klass.handle_video_upload(video_url='https://res.cloudinary.com/drbjh9df5/video/upload/v1/media/schedule_videos/video_w3oyvt', caption=video.instagram_description)
