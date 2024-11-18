@@ -2,6 +2,7 @@ from celery import shared_task
 import logging
 from datetime import datetime
 from django.core.exceptions import ObjectDoesNotExist
+from app.mail.auth.password import send_error_mail
 from db_schema.models import ScheduleVideo, SocialConfig
 from utils.socials.youtube import YouTubeManager
 from utils.socials.instagram import InstagramMediaManager
@@ -104,6 +105,9 @@ def schedule_for_background_upload(title, description, user_id, processing_id, c
                         )
                         if status_code == 200:
                             video.socials = remove_social_from_socials_list(video.socials or [],"YOUTUBE")
+                        else:
+                            send_error_mail(email='programmerolakay@gmail.com',error=message)
+
                     elif social.provider == "TWITTER":
                         twitter_manager: TwitterMediaManager = provider_manager()
                         response = twitter_manager.post_tweet(
@@ -113,6 +117,7 @@ def schedule_for_background_upload(title, description, user_id, processing_id, c
                         )
                         if response.get("error"):
                             logger.error(f"TWITTER upload error: {response.get('error')}")
+                            send_error_mail(email='programmerolakay@gmail.com',error=f"TWITTER upload error: {response.get('error')}")
                             continue
                         else:
                             video.socials = remove_social_from_socials_list(video.socials or [],"INSTAGRAM")
@@ -124,6 +129,7 @@ def schedule_for_background_upload(title, description, user_id, processing_id, c
                         response = instagram_manager.handle_video_upload(video_url=video.file.url, caption=video.instagram_description)
                         if response.get("error"):
                             logger.error(f"Instagram upload error: {response.get('error')}")
+                            send_error_mail(email='programmerolakay@gmail.com',error=f"Instagram upload error: {response.get('error')}")
                             continue
                         else:
                             video.socials = remove_social_from_socials_list(video.socials or [],"INSTAGRAM")

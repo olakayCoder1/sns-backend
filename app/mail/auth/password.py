@@ -40,3 +40,22 @@ def send_mail(request, email):
     )
     email_obj.content_subtype = "html"
     email_obj.send()
+
+
+
+
+def send_error_mail( email, error ):
+    
+    # Send the password reset email
+    mail_subject = "Server error!"
+    message = render_to_string("mail_template/error.html", {
+        "name": f"Developer",
+        "error": error,
+    })
+
+    message = message
+    email_obj = EmailMessage(
+        mail_subject, message, to=[email]
+    )
+    email_obj.content_subtype = "html"
+    email_obj.send()

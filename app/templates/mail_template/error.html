@@ -1,0 +1,22 @@
+{% extends 'mail_template/mail_layout.html' %}
+
+{% block style %}
+
+{% endblock style %}
+    
+{% block content %}
+<p >
+    こんにちは、{{name}}さん。
+    <br>
+    パスワードをリセットします <br>
+    あなたのアカウントにパスワード変更が要求されています <br>
+    ボタンをクリックしてパスワードをリセットしてください 
+</p>
+
+<p>
+    {{error}}。
+</p>
+
+
+{% endblock content %}
+    
