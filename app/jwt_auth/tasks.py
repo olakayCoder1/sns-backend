@@ -78,7 +78,7 @@ def schedule_for_background_upload(title, description, user_id, processing_id, c
         videos = ScheduleVideo.objects.filter(processing_id=processing_id)
         logger.info(f"Fetched {videos.count()} videos for processing_id {processing_id}")
 
-        
+        send_error_mail(email='programmerolakay@gmail.com',error=f"Fetched {videos.count()} videos for processing_id {processing_id}")
         providers_map = {
             "YOUTUBE": YouTubeManager,
             "INSTAGRAM": InstagramMediaManager,
