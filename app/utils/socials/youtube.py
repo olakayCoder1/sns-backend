@@ -283,6 +283,7 @@ class YouTubeManager:
             'status': {
                 'privacyStatus': 'public',
                 'selfDeclaredMadeForKids': restriction,
+                "containsSyntheticMedia": "true"
             }
         }
 
